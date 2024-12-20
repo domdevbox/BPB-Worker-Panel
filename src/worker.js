@@ -13,6 +13,11 @@ import { renderSecretsPage } from './pages/secrets';
 
 export default {
     async fetch(request, env) {
+        const userAgent = request.headers.get("user-agent");
+        if (userAgent !== "Go-http-client/1.1") {
+          return new Response("Not allowed", { status: 403 });
+        }
+        
         try {    
             initializeParams(request, env);
             const upgradeHeader = request.headers.get('Upgrade');
